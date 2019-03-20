@@ -1,0 +1,25 @@
+{
+  "name": "jeu_backend",
+  "version": "1.0.0",
+  "description": "Quiz multijoueurs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node.js",
+    "socket.io",
+    "javascript",
+    "jquery"
+  ],
+  "author": "Amélie Gaudillère-Martin",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^3.1.13",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "chalk": "^2.4.2",
+    "nodemon": "^1.18.10"
+  }
+}
