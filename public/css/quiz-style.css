@@ -4,7 +4,7 @@
 body{
     background-color: white;
     /* width: 800px; */
-    background-image: url(./public/img/pattern-pokemon.png);
+    background-image: url(../../public/img/pattern-pokemon.png);
     background-repeat: repeat;
 }
 

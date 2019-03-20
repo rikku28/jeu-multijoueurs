@@ -40,6 +40,8 @@ app.get('/', function(req, res){
     // log(path.dirname);
 });
 
+//Doc Express pour le traitement des erreurs : https://expressjs.com/fr/guide/error-handling.html
+
 /********************************* Création du serveur HTTP sans Express *********************************/
 
 // httpServer.on('request', function(httpRequest, httpResponse) {

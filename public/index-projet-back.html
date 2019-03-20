@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 <!-- Liens vers la feuille de style et des polices-->
-    <link href="./css/quiz-style.css" rel="stylesheet" type="text/css">
     <!-- <link href="https://fonts.googleapis.com/css?family=Macondo+Swash+Caps" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet"> -->
         <!-- Font pour les titres et mises en "avant" (ex.: date) ...-->
@@ -16,6 +15,7 @@
         <!-- Font pour le texte des paragraphes, span, ...-->
     <link href="https://fonts.googleapis.com/css?family=BenchNine" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed" rel="stylesheet">
+    <link href="./public/css/quiz-style.css" rel="stylesheet" type="text/css">
 
 <!-- Chargement des scripts et librairies -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
@@ -33,27 +33,33 @@
             <h1>Bienvenue</h1>
             <div>
                 <form id="login-form">
-                    <input type="text" name="pseudo" id="login-form-pseudo" placeholder="Choisissez un pseudonyme" minlength="4" maxlength="10" pattern="/^[a-zA-Z0-9_-]{4,10}$" size="25">
-                    <input type="email" name="mail" id="login-form-email" pattern="^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[fr|com|eu|lu|de]{2,4}$" placeholder="Entrez votre adresse email" size="25"> <!-- pattern attend une expression réglière. testée sur regex101.com -->
-                    <input type="password" name="mdp" id="login-form-mdp" placeholder="Saisissez votre mot de passe" minlength="6" maxlength="12" pattern="/^[a-zA-Z0-9_-]{6,12}$" size="25">
+                    <input type="text" name="pseudo" id="login-form-pseudo" placeholder="Choisissez un pseudonyme" minlength="4" maxlength="10" size="25">
+                    <!-- pattern="/^[a-zA-Z0-9_-]{4,10}$"  -->
+                    <input type="email" name="mail" id="login-form-email" placeholder="Entrez votre adresse email" size="25"> <!-- pattern attend une expression réglière. testée sur regex101.com, ok en JS : pattern="^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[fr|com|eu|lu|de]{2,4}$" --> erreur sur Chrome -->
+                    <input type="password" name="mdp" id="login-form-mdp" placeholder="Saisissez votre mot de passe" minlength="6" maxlength="12" size="25">
+                    <!-- pattern="/^[a-zA-Z0-9_-]{6,12}$" -->
                     <input type="text" name="avatar" id="login-form-avatar" placeholder="Entrez l'url de votre avatar" size="25">
                     <input type="submit" value="Envoyer">       
                 </form>
             </div>
         </section>
         <section id="quiz">
-            <h2>Questions du quiz</h2>
+            <h2>Question du quiz</h2>
             <div id="questions">
+                <p>La question n° xx est : </p>
                 <div id="indices">
-                    <img id="indice-img" src="" alt="">
+                    <img id="indice-img" src="https://www.nautiljon.com/images/actualite/00/17/selon_les_concepteurs_de_la_serie_pokemon_pikachu_n_est_pas_une_souris_9271.jpg?1525335621" alt="Pikachu">
                     <p id="indice-txt"></p>
                 </div>
             </div>
             <div class="reponses">
                 <form>
                     <fieldset>
-                        <legend>Choisissez la réponse à la question xx :</legend>
-                        <input type="radio" id="rep1" name="rep1" value="rep1">
+                        <legend>Choisissez la bonne réponse à la question xx :</legend>
+                        <input type="radio" id="rep1" name="rep1" value="rep1">Pikachu
+                        <input type="radio" id="rep2" name="rep2" value="rep2">Mélofée
+                        <input type="radio" id="rep3" name="rep3" value="rep3">Évoli
+                        <input type="radio" id="rep4" name="rep4" value="rep4">Chétiflor
                     </fieldset>
                 </form>
             </div>
