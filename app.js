@@ -12,13 +12,16 @@ const path = require('path');
 const fileSys = require('fs');
 
 /******************** Configuration du module "http" avec Express JS, en plus de Node.JS ********************/
-// const express = require('express');
-// const app = express();
-// const http = require('http').Server(app);
+const express = require('express');
+const app = express();
+const httpServer = require('http').Server(app);
+app.use('/public', express.static(__dirname + '/public'));
 
 /***************************** Configuration du module "http" sans Express JS *****************************/
-const http = require('http');
-const httpServer = http.createServer();
+// const http = require('http');
+// const httpServer = http.createServer();
+
+/************************* Ajout du module Node de socket.io + config du port HTTP *************************/
 const socketIo = require('socket.io');
 const port = 3333;
 
@@ -28,62 +31,112 @@ const ObjectId = require('mongodb').ObjectId;
 const url = 'mongodb://localhost:27017';
 const dbName = 'jeuBackEnd';
 
-/*************************************** Création du serveur HTTP ***************************************/
+/********************************* Création du serveur HTTP avec Express *********************************/
 
-httpServer.on('request', function(httpRequest, httpResponse) {
-    log('Test: 1, 2! 1, 2!');
-
-// On charge la page d'accueil
-    const ficIndex = './public/index-projet-back.html';
-    const fic404 = './public/404.html';
-
-    fileSys.readFile(ficIndex, function(error, fileContent){
-        if(error){
-            func404();
-        } else{
-            httpResponse.writeHead(200, {
-                'Content-Type': 'text/html; charset=UTF-8',
-                'Content-length': fileContent.length
-            });
-            httpResponse.write(fileContent, function() {
-                httpResponse.end();
-            });
-        }
-    });
-
-// console.log(process.execPath);
-// console.log(process.argv);
-    console.log(path.dirname(process.argv[1]));
-    console.log(httpRequest.url);
-    let chemin = path.dirname(process.argv[1]); // path.dirname() semble intégrer path.normalize()
-// chemin = path.normalize(chemin);
-    console.log(`Le chemin via processArgv1 est ${chemin} et l'url reçue dans la requete HTTP est ${httpRequest.url} .`);
-    var func404 = function(){
-        if (erreur){
-            throw erreur;
-            console.log(donnees);
-        } else{
-            fSys.readFile(fic404, 'utf8', function(error, datas){
-                httpResponse.writeHead(404, {
-                    'Content-Type': 'text/html; charset=UTF-8',
-                    'Content-length': datas.length
-                });
-                httpResponse.write(datas, function(){
-                    console.log(`Fichier 404 lu ! :)`);
-                });
-                httpResponse.end();
-            });
-        }
-    };
+app.get('/', function(req, res){
+    // res.render('test', {title: 'Chat avec socket.io - Tuto Grafikart'});
+    let htmlFile = path.normalize(__dirname + '/public/index-projet-back.html');
+    res.sendFile(htmlFile);
+    // log(path.dirname);
 });
+
+/********************************* Création du serveur HTTP sans Express *********************************/
+
+// httpServer.on('request', function(httpRequest, httpResponse) {
+//     log('Test: 1, 2! 1, 2!');
+
+//     var func404 = function(){
+//         if (erreur){
+//             throw erreur;
+//             console.log(donnees);
+//         } else{
+//             fSys.readFile(fic404, 'utf8', function(error, datas){
+//                 httpResponse.writeHead(404, {
+//                     'Content-Type': 'text/html; charset=UTF-8',
+//                     'Content-length': datas.length
+//                 });
+//                 httpResponse.write(datas, function(){
+//                     console.log(`Fichier 404 lu ! :)`);
+//                 });
+//                 httpResponse.end();
+//             });
+//         }
+//     };
+
+
+// // console.log(process.execPath);
+// // console.log(process.argv);
+//     console.log(path.dirname(process.argv[1]));
+//     console.log(httpRequest.url);
+//     let chemin = path.dirname(process.argv[1]); // path.dirname() semble intégrer path.normalize()
+// // chemin = path.normalize(chemin);
+//     console.log(`Le chemin via processArgv1 est ${chemin} et l'url reçue dans la requete HTTP est ${httpRequest.url} .`);
+// });
+
+// // On charge les pages HTML
+//     const ficIndex = './public/index-projet-back.html';
+//     const fic404 = './public/404.html';
+
+//     fileSys.readFile(ficIndex, function(error, fileContent){
+//         if(error){
+//             func404();
+//         } else{
+//             httpResponse.writeHead(200, {
+//                 'Content-Type': 'text/html; charset=UTF-8',
+//                 'Content-length': fileContent.length
+//             });
+//             httpResponse.write(fileContent, function() {
+//                 httpResponse.end();
+//             });
+//         }
+//     });
+
+// httpServer.on('request', function(httpRequest, httpResponse) {
+//     log('Test serveur! 1, 2! 1, 2!');
+
+// // On charge une page HTML
+//     const fileName = './public/index-projet-back.html';
+
+//     fileSys.readFile(fileName, function(error, datas) {
+//         httpResponse.writeHead(200, {
+//             'Content-Type': 'text/html; charset=UTF-8',
+//             'Content-length': datas.length
+//         });
+//         httpResponse.write(datas, function() {
+//             httpResponse.end();
+//         });
+//     });
+// });
 
 /**************************** On rattache le serveur HTTP à socket.io ************************************/
 const io = socketIo(httpServer);
 
+var users = {};
+
 io.on('connection', function(socket){
     log('Coucou depuis le serveur!');
 
+    log('Un nouvel utilisateur vient de se connecter. ' + socket.id);
+    var userConnected = false;
+// Connexion d'un utilisateur
+    socket.on('login', function(infosUser){
+        log(messages);
+        log(infosUser);
+        userConnected = infosUser;
+        userConnected.id = infosUser.pseudo;
+        log(userConnected);
+        socket.emit('userConnectOk');
+        // socket.broadcast.emit('newUser', userConnected);
+        users[userConnected.id] = userConnected;
 
+        io.emit('newUser', userConnected);   // Envoyé à tlm
+    });
+
+// Déconnexion d'un utilisateur
+    socket.on('disconnect', function(){
+        delete users[userConnected.id];
+        socket.emit('decoUsr', userConnected);   // Envoyé à tlm
+    });
 
 /**************************** Récupération des questions du quiz dans la BDD ****************************/
     MongoClient.connect(url,{ useNewUrlParser: true },function(error,client) {
