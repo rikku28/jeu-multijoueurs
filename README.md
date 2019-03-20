@@ -1,6 +1,6 @@
 # Jeu multijoueur
 
-Il s'agît d'un quizz réalisé dans le cadre de la formation que je suis pour devenir développeuse full stack Javascript. un jeu multijoueurs. Quiz sur les Pokémons (principalement les jeux rouge / bleu / jaune + et la 1ère saison de l'animé)
+Il s'agît d'un quiz en cours de réalisation dans le cadre de la formation que je suis pour devenir développeuse full stack Javascript.
 
 ## Thème du quiz
 
