@@ -35,7 +35,7 @@
                 <form id="login-form">
                     <input type="text" name="pseudo" id="login-form-pseudo" placeholder="Choisissez un pseudonyme" minlength="4" maxlength="10" size="25">
                     <!-- pattern="/^[a-zA-Z0-9_-]{4,10}$"  -->
-                    <input type="email" name="mail" id="login-form-email" placeholder="Entrez votre adresse email" size="25"> <!-- pattern attend une expression réglière. testée sur regex101.com, ok en JS : pattern="^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[fr|com|eu|lu|de]{2,4}$" --> erreur sur Chrome -->
+                    <!-- <input type="email" name="mail" id="login-form-email" placeholder="Entrez votre adresse email" size="25"> pattern attend une expression réglière. testée sur regex101.com, ok en JS : pattern="^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[fr|com|eu|lu|de]{2,4}$" -> erreur sur Chrome -->
                     <input type="password" name="mdp" id="login-form-mdp" placeholder="Saisissez votre mot de passe" minlength="6" maxlength="12" size="25">
                     <!-- pattern="/^[a-zA-Z0-9_-]{6,12}$" -->
                     <input type="text" name="avatar" id="login-form-avatar" placeholder="Entrez l'url de votre avatar" size="25">
@@ -43,7 +43,7 @@
                 </form>
             </div>
         </section>
-        <section id="quiz">
+        <section id="quiz" class="masquee">
             <h2>Question du quiz</h2>
             <div id="questions">
                 <p>La question n° xx est : </p>
@@ -52,20 +52,25 @@
                     <p id="indice-txt"></p>
                 </div>
             </div>
-            <div class="reponses">
-                <form>
-                    <fieldset>
-                        <legend>Choisissez la bonne réponse à la question xx :</legend>
-                        <input type="radio" id="rep1" name="rep1" value="rep1">Pikachu
-                        <input type="radio" id="rep2" name="rep2" value="rep2">Mélofée
-                        <input type="radio" id="rep3" name="rep3" value="rep3">Évoli
-                        <input type="radio" id="rep4" name="rep4" value="rep4">Chétiflor
-                    </fieldset>
+            <div class="reponses" class="masquee">
+                <form id="question-form">
+                    <!-- <fieldset>
+                        <legend>Choisissez la bonne réponse :</legend>
+                        <input type="radio" id="rep1" name="q1">
+                        <label for="rep1">Pikachu</label><br/>
+                        <input type="radio" id="rep2" name="q1">
+                        <label for="rep2">Mélofée</label><br/>
+                        <input type="radio" id="rep3" name="q1">
+                        <label for="rep3">Évoli</label><br/>
+                        <input type="radio" id="rep4" name="q1">
+                        <label for="rep4">Chétiflor</label><br/>
+                    </fieldset> -->
+                    <input type="submit" value="Envoyer">
                 </form>
             </div>
         </section>
-        <section>
-            <h2>Scores de la partie en cours</h2>
+        <section id="scores" class="masquee">
+            <h3>Scores de la partie en cours</h2>
             <div id="player1">
                 <p id="pseudo-player1"></p>
                 <p id="score-player1"></p>

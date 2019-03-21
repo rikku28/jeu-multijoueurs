@@ -114,8 +114,29 @@ app.get('/', function(req, res){
 const io = socketIo(httpServer);
 
 var users = [];
-var listeQuestions = [];
-var attenteJoueur = null;
+// var listeQuestions = [];
+var i = 0;
+var tabImg = ['https://img.finalfantasyxiv.com/lds/h/O/Fr7KRCysdNsR9I6Hb-zm3JBxHo.jpg',
+'https://img.finalfantasyxiv.com/lds/h/c/Lp_H1IcwXscYRNOjnA5cRP2nzg.jpg',
+'https://img.finalfantasyxiv.com/lds/h/1/3IzrlwHgbmkge3y2mLxUv7LoOE.jpg',
+'https://img.finalfantasyxiv.com/lds/h/y/WKWjOsHO-YhrQRrtyqPESmAOS8.jpg',
+'https://img.finalfantasyxiv.com/lds/h/s/klqIudR8eeZXdJgnT0SRNaU12c.jpg',
+'https://img.finalfantasyxiv.com/lds/h/k/uC-wgqucm-Id_BrwAD6ZdJ063s.jpg',
+'https://img.finalfantasyxiv.com/lds/h/R/i3ZGTuQ1sTdMM0aBRqIbbwASkg.jpg',
+'https://img.finalfantasyxiv.com/lds/h/q/5qwBmgIdSAuyiiANLHGOtAtZ8M.jpg',
+'https://img.finalfantasyxiv.com/lds/h/k/oWUgHovMvzS1NmSwVWW8RlJbRQ.jpg',
+'https://img.finalfantasyxiv.com/lds/h/a/qdE4DqFwK7A6v6Gj3XXHcghUro.jpg',
+'https://img.finalfantasyxiv.com/lds/h/A/fVK3q5RTziMHjB58U3yscIkGZk.jpg',
+'https://img.finalfantasyxiv.com/lds/h/p/uj2qghM7m4v5acRnv9uGxwQwrE.jpg',
+'https://img.finalfantasyxiv.com/lds/h/p/ZEauvndtd_YRii7L3NIxXuWcZo.jpg',
+'https://img.finalfantasyxiv.com/lds/h/f/jDjsNgBLgnrSl1fMblKSuiek_k.jpg',
+'https://img.finalfantasyxiv.com/lds/h/6/hPQOUzGkgkUAmkM7bAMsTMLHDM.jpg',
+'https://img.finalfantasyxiv.com/lds/h/-/_GD6TZ19Iw0KN5Go1dqbjP1zWs.jpg',
+'https://img.finalfantasyxiv.com/lds/h/G/IjKbn7Ca9qm2njOshaSULt9vM8.png',
+'https://img.finalfantasyxiv.com/lds/h/0/uIlEtAoOLjk3BnlJ7GosR02Ts4.jpg',
+'https://img.finalfantasyxiv.com/lds/h/q/X6THcGEO49unZQG9fHdgAqtzFU.jpg',
+'https://img.finalfantasyxiv.com/lds/h/0/cSr-p_PAXcyKjcmkjeQ9fI6y4w.jpg',
+'https://img.finalfantasyxiv.com/lds/h/p/QjDI6p3UB8lNQFF6weoUGAQ_kI.png'];
 
 io.on('connection', function(socket){
     log('Coucou depuis le serveur!');
@@ -126,8 +147,12 @@ io.on('connection', function(socket){
     socket.on('login', function(infosUser){
         // log(messages);
         log(infosUser);
+        if(i === (tabImg.length + 1)){
+            i = 0;
+        };
         userConnected = infosUser;
         userConnected.id = infosUser.pseudo;
+        userConnected.img = tabImg[i];
         log(userConnected);
         socket.emit('userConnectOk');
         // socket.broadcast.emit('newUser', userConnected);
@@ -137,6 +162,7 @@ io.on('connection', function(socket){
         // if(!connectes){
             io.emit('newUser', userConnected);   // Envoyé à tlm
         // };
+        i++;
     });
 
 // Déconnexion d'un utilisateur
@@ -146,18 +172,16 @@ io.on('connection', function(socket){
     });
 
 /**************************** Récupération des questions du quiz dans la BDD ****************************/
-    MongoClient.connect(url,{ useNewUrlParser: true },function(error,client) {
-        const db = client.db(dbName);
-        const collection = db.collection('questions');
-        collection.find({}).toArray(function(error,datas) {
-            client.close();
-            log('Nombre de questions : ', datas.length);
-            listeQuestions = datas;
-            // log(listeQuestions);
-            // Transmission des données :
-            // res.render('utilisateurs', {title:'Liste des utilisateurs en base', liste: datas});
-        });
-    });
+    // MongoClient.connect(url,{ useNewUrlParser: true },function(error,client) {
+    //     const db = client.db(dbName);
+    //     const collection = db.collection('questions');
+    //     collection.find({}).toArray(function(error,datas) {
+    //         client.close();
+    //         // log('Questions : ', datas);
+    //         // Transmission des données :
+    //         // res.render('utilisateurs', {title:'Liste des utilisateurs en base', liste: datas});
+    //     });
+    // });
 
 
 

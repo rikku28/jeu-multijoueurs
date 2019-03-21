@@ -24,6 +24,12 @@ h2{
     font-family: 'Ranchers', 'Bangers', 'Boogaloo', cursive;
 }
 
+h3{
+    font-size: 2em;
+    text-align: center;
+    font-family: 'Ranchers', 'Bangers', 'Boogaloo', cursive;
+}
+
 p, span{
     font-family: 'BenchNine', 'Saira Extra Condensed', sans-serif;
 }
