@@ -114,8 +114,24 @@ app.get('/', function(req, res){
 const io = socketIo(httpServer);
 
 var users = [];
+var round = 0;
 var listeQuestions = [];
 var attenteJoueur = null;
+
+
+/**************************** Récupération des questions du quiz dans la BDD ****************************/
+MongoClient.connect(url,{ useNewUrlParser: true },function(error,client) {
+    const db = client.db(dbName);
+    const collection = db.collection('questions');
+    collection.find({}).toArray(function(error,datas) {
+        client.close();
+        log('Nombre de questions : ', datas.length);
+        listeQuestions = datas;
+        // log(listeQuestions);
+        // Transmission des données :
+        // res.render('utilisateurs', {title:'Liste des utilisateurs en base', liste: datas});
+    });
+});
 
 io.on('connection', function(socket){
     log('Coucou depuis le serveur!');
@@ -136,27 +152,32 @@ io.on('connection', function(socket){
         // let connectes = users.include(userConnected.id);
         // if(!connectes){
             io.emit('newUser', userConnected);   // Envoyé à tlm
-        // };
+        // };      => Tester en mettant ce "emit" en dehors du "on" dédié au "login"
     });
+
+
+    //Faire une fonction newQuestion
+
+    // Faire une fonction nextQuestion
+
+    if(round === 0){
+            let idQ = round;
+            socket.emit('new question', )
+    } else{
+        socket.emit('next question', )
+        if( round >10){
+            alert(`Jeu terminé`);
+            checkScores();
+        }
+    }
+
+
+
 
 // Déconnexion d'un utilisateur
     socket.on('disconnect', function(){
         delete users[userConnected.id];
         socket.emit('decoUsr', userConnected);   // Envoyé à tlm
-    });
-
-/**************************** Récupération des questions du quiz dans la BDD ****************************/
-    MongoClient.connect(url,{ useNewUrlParser: true },function(error,client) {
-        const db = client.db(dbName);
-        const collection = db.collection('questions');
-        collection.find({}).toArray(function(error,datas) {
-            client.close();
-            log('Nombre de questions : ', datas.length);
-            listeQuestions = datas;
-            // log(listeQuestions);
-            // Transmission des données :
-            // res.render('utilisateurs', {title:'Liste des utilisateurs en base', liste: datas});
-        });
     });
 
 

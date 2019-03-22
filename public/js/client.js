@@ -19,6 +19,8 @@
 var dateJour = new Date();
 var timestamp=dateJour.getTime(dateJour);
 
+var players = [];
+
 // Formulaire de connexion
         window.addEventListener('submit', function(event){
             event.preventDefault();
@@ -42,13 +44,14 @@ var timestamp=dateJour.getTime(dateJour);
             //- alert('Nouvel utilisateur!');
             log('nouvel utilisateur', userConnected);
             log(`L'utilisateur " ${userConnected.id} " est connecté.`);
+            $('#player1').empty();
             $('#player1').append('<img src="' + userConnected.img + '" id="' + userConnected.id +'" width="100px"><br/><p id="' + userConnected.pseudo + '">' + userConnected.pseudo + '</p>');  // height="100px"
         });
 
         var i = 0;
         var questionEnCours = i;
         var tabQuestions = [];
-        socket.on('affichageQuestion', function(mongoDatas){
+        socket.on('newQuestion', function(mongoDatas){
             log(mongoDatas);
         });
 
