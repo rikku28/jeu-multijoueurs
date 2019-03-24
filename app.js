@@ -34,8 +34,11 @@ const dbName = 'jeuBackEnd';
 /********************************* Création du serveur HTTP avec Express *********************************/
 
 app.get('/', function(req, res){
-    // res.render('test', {title: 'Chat avec socket.io - Tuto Grafikart'});
+    // log(req);
     let htmlFile = path.normalize(__dirname + '/public/index-projet-back.html');
+
+    // Créer user en bdd ou vérifier qu'il existe en base, puis récupérer son session id
+
     res.sendFile(htmlFile);
     // log(path.dirname);
 });
@@ -113,6 +116,7 @@ app.get('/', function(req, res){
 /**************************** On rattache le serveur HTTP à socket.io ************************************/
 const io = socketIo(httpServer);
 
+/******************************* Déclaration des variables globales ***************************************/
 var users = [];
 var round = 0;
 var listeQuestions = [];
@@ -133,6 +137,7 @@ MongoClient.connect(url,{ useNewUrlParser: true },function(error,client) {
     });
 });
 
+/*********************************** On établie la connexion *******************************************/
 io.on('connection', function(socket){
     log('Coucou depuis le serveur!');
 
@@ -154,7 +159,6 @@ io.on('connection', function(socket){
             io.emit('newUser', userConnected);   // Envoyé à tlm
         // };      => Tester en mettant ce "emit" en dehors du "on" dédié au "login"
     });
-
 
     //Faire une fonction newQuestion
 

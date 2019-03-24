@@ -10,10 +10,10 @@
     window.addEventListener('DOMContentLoaded', function(){
         const log = console.log;
         log('Coucou côté client');
-        $('.masquee').fadeOut();
+        $('.masquee').hide();
 // On déclare l'ip et le port auxquels le socket sera relié.
-        // var socket = io('http://192.168.0.122:3333');
-        var socket = io('http://10.53.43.142:3333');
+        var socket = io('http://192.168.0.122:3333');
+        // var socket = io('http://10.53.43.142:3333');
 
 // Date et timestamp de la date du jour
 var dateJour = new Date();
