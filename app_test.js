@@ -34,11 +34,8 @@ const dbName = 'jeuBackEnd';
 /********************************* Création du serveur HTTP avec Express *********************************/
 
 app.get('/', function(req, res){
-    // log(req);
+    // res.render('test', {title: 'Chat avec socket.io - Tuto Grafikart'});
     let htmlFile = path.normalize(__dirname + '/public/index-projet-back.html');
-
-    // Créer user en bdd ou vérifier qu'il existe en base, puis récupérer son session id
-
     res.sendFile(htmlFile);
     // log(path.dirname);
 });
@@ -116,28 +113,31 @@ app.get('/', function(req, res){
 /**************************** On rattache le serveur HTTP à socket.io ************************************/
 const io = socketIo(httpServer);
 
-/******************************* Déclaration des variables globales ***************************************/
 var users = [];
-var round = 0;
-var listeQuestions = [];
-var attenteJoueur = null;
+// var listeQuestions = [];
+var i = 0;
+var tabImg = ['https://img.finalfantasyxiv.com/lds/h/O/Fr7KRCysdNsR9I6Hb-zm3JBxHo.jpg',
+'https://img.finalfantasyxiv.com/lds/h/c/Lp_H1IcwXscYRNOjnA5cRP2nzg.jpg',
+'https://img.finalfantasyxiv.com/lds/h/1/3IzrlwHgbmkge3y2mLxUv7LoOE.jpg',
+'https://img.finalfantasyxiv.com/lds/h/y/WKWjOsHO-YhrQRrtyqPESmAOS8.jpg',
+'https://img.finalfantasyxiv.com/lds/h/s/klqIudR8eeZXdJgnT0SRNaU12c.jpg',
+'https://img.finalfantasyxiv.com/lds/h/k/uC-wgqucm-Id_BrwAD6ZdJ063s.jpg',
+'https://img.finalfantasyxiv.com/lds/h/R/i3ZGTuQ1sTdMM0aBRqIbbwASkg.jpg',
+'https://img.finalfantasyxiv.com/lds/h/q/5qwBmgIdSAuyiiANLHGOtAtZ8M.jpg',
+'https://img.finalfantasyxiv.com/lds/h/k/oWUgHovMvzS1NmSwVWW8RlJbRQ.jpg',
+'https://img.finalfantasyxiv.com/lds/h/a/qdE4DqFwK7A6v6Gj3XXHcghUro.jpg',
+'https://img.finalfantasyxiv.com/lds/h/A/fVK3q5RTziMHjB58U3yscIkGZk.jpg',
+'https://img.finalfantasyxiv.com/lds/h/p/uj2qghM7m4v5acRnv9uGxwQwrE.jpg',
+'https://img.finalfantasyxiv.com/lds/h/p/ZEauvndtd_YRii7L3NIxXuWcZo.jpg',
+'https://img.finalfantasyxiv.com/lds/h/f/jDjsNgBLgnrSl1fMblKSuiek_k.jpg',
+'https://img.finalfantasyxiv.com/lds/h/6/hPQOUzGkgkUAmkM7bAMsTMLHDM.jpg',
+'https://img.finalfantasyxiv.com/lds/h/-/_GD6TZ19Iw0KN5Go1dqbjP1zWs.jpg',
+'https://img.finalfantasyxiv.com/lds/h/G/IjKbn7Ca9qm2njOshaSULt9vM8.png',
+'https://img.finalfantasyxiv.com/lds/h/0/uIlEtAoOLjk3BnlJ7GosR02Ts4.jpg',
+'https://img.finalfantasyxiv.com/lds/h/q/X6THcGEO49unZQG9fHdgAqtzFU.jpg',
+'https://img.finalfantasyxiv.com/lds/h/0/cSr-p_PAXcyKjcmkjeQ9fI6y4w.jpg',
+'https://img.finalfantasyxiv.com/lds/h/p/QjDI6p3UB8lNQFF6weoUGAQ_kI.png'];
 
-
-/**************************** Récupération des questions du quiz dans la BDD ****************************/
-MongoClient.connect(url,{ useNewUrlParser: true },function(error,client) {
-    const db = client.db(dbName);
-    const collection = db.collection('questions');
-    collection.find({}).toArray(function(error,datas) {
-        client.close();
-        log('Nombre de questions : ', datas.length);
-        listeQuestions = datas;
-        // log(listeQuestions);
-        // Transmission des données :
-        // res.render('utilisateurs', {title:'Liste des utilisateurs en base', liste: datas});
-    });
-});
-
-/*********************************** On établie la connexion *******************************************/
 io.on('connection', function(socket){
     log('Coucou depuis le serveur!');
 
@@ -147,8 +147,12 @@ io.on('connection', function(socket){
     socket.on('login', function(infosUser){
         // log(messages);
         log(infosUser);
+        if(i === (tabImg.length + 1)){
+            i = 0;
+        };
         userConnected = infosUser;
         userConnected.id = infosUser.pseudo;
+        userConnected.img = tabImg[i];
         log(userConnected);
         socket.emit('userConnectOk');
         // socket.broadcast.emit('newUser', userConnected);
@@ -157,32 +161,27 @@ io.on('connection', function(socket){
         // let connectes = users.include(userConnected.id);
         // if(!connectes){
             io.emit('newUser', userConnected);   // Envoyé à tlm
-        // };      => Tester en mettant ce "emit" en dehors du "on" dédié au "login"
+        // };
+        i++;
     });
-
-    //Faire une fonction newQuestion
-
-    // Faire une fonction nextQuestion
-
-    if(round === 0){
-            let idQ = round;
-            socket.emit('new question', )
-    } else{
-        socket.emit('next question', )
-        if( round >10){
-            alert(`Jeu terminé`);
-            checkScores();
-        }
-    }
-
-
-
 
 // Déconnexion d'un utilisateur
     socket.on('disconnect', function(){
         delete users[userConnected.id];
         socket.emit('decoUsr', userConnected);   // Envoyé à tlm
     });
+
+/**************************** Récupération des questions du quiz dans la BDD ****************************/
+    // MongoClient.connect(url,{ useNewUrlParser: true },function(error,client) {
+    //     const db = client.db(dbName);
+    //     const collection = db.collection('questions');
+    //     collection.find({}).toArray(function(error,datas) {
+    //         client.close();
+    //         // log('Questions : ', datas);
+    //         // Transmission des données :
+    //         // res.render('utilisateurs', {title:'Liste des utilisateurs en base', liste: datas});
+    //     });
+    // });
 
 
 

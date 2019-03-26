@@ -4,13 +4,14 @@
 body{
     background-color: white;
     /* width: 800px; */
-    background-image: url(./public/img/pattern-pokemon.png);
+    background-image: url(../../public/img/pattern-pokemon.png);
     background-repeat: repeat;
 }
 
 main{
-    width: 8000px;
+    width: 800px;
 }
+
 h1{
     font-size: 3em;
     text-align: center;
@@ -19,6 +20,12 @@ h1{
 
 h2{
     font-size: 2.5em;
+    text-align: center;
+    font-family: 'Ranchers', 'Bangers', 'Boogaloo', cursive;
+}
+
+h3{
+    font-size: 2em;
     text-align: center;
     font-family: 'Ranchers', 'Bangers', 'Boogaloo', cursive;
 }
